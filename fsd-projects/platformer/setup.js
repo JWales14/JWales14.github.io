@@ -100,6 +100,6 @@ var collectableList = {
   diamond: { image: "images/collectables/diamond-head.png" },
   grace: { image: "images/collectables/grace-head.png" },
   kennedi: { image: "images/collectables/kennedi-head.png" },
-  max: { image: "images/collectables/max-head.png" },
+  max: { image: "https://www.kroger.com/product/images/xlarge/front/0001980020133" },
   steve: { image: "images/collectables/steve-head.png" },
 };
