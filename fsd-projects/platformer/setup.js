@@ -96,7 +96,7 @@ let halleImage;
 let animationDetails = {};
 
 var collectableList = {
-  database: { image: "images/collectables/database.png" },
+  database: { image: "https://freepngimg.com/save/91876-square-art-bros-mario-allstars-super/1600x1600" },
   diamond: { image: "images/collectables/diamond-head.png" },
   grace: { image: "images/collectables/grace-head.png" },
   kennedi: { image: "images/collectables/kennedi-head.png" },
