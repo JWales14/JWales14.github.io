@@ -6,10 +6,12 @@
     <script src="jquery.min.js"></script>
     <style>
       .box {
-        width: 70px;
-        height: 70px;
-        background-color: teal;
+        width: 100px;
+        height: 100px;
+        background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9deLelqZ239dF5vhbgElKAjV6274oeBczJrANQBB9vHbcr5GfWjlXrz0:https://i.pinimg.com/1200x/b9/59/86/b959866122dd7aeba21a527121506131.jpg&s=10);
+        background-size: cover;
         font-size: 300%;
+        color: white;
         text-align: center;
         user-select: none;
         display: block;
@@ -20,6 +22,14 @@
       }
 
       .board {
+        background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQARGd5JXz1LcVw9wMAESdGpT_uHgTtVbjL7SPFA4oYUT-_orPsPuWYlo:https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/d477e123-2663-4944-bc38-0b919617bbb0/d6toae7-14fda379-dd61-4e9d-8260-fdba89bab91d.png/v1/fill/w_1192,h_670,q_70,strp/super_mario_bros_1_1_wallpaper_hd_flat_by_wougie89_d6toae7-pre.jpg%3Ftoken%3DeyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTA4MCIsInBhdGgiOiIvZi9kNDc3ZTEyMy0yNjYzLTQ5NDQtYmMzOC0wYjkxOTYxN2JiYjAvZDZ0b2FlNy0xNGZkYTM3OS1kZDYxLTRlOWQtODI2MC1mZGJhODliYWI5MWQucG5nIiwid2lkdGgiOiI8PTE5MjAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.LWgcEaSkrXc1vtwH1S6l6p-Z7KOWqxXa-YyHG1cS4Gg&s=10);
+        background-size: cover;
+        height: 100vh;
+      }
+
+      .board2 {
+        background-image: url(https://static.wikia.nocookie.net/mario/images/1/19/SMB_World_1-2_NES_2.png/revision/latest?cb=20190815050442);
+        background-size: cover;
         height: 100vh;
       }
     </style>
@@ -41,6 +51,7 @@
 
         var box = jQuery(".box"); // reference to the HTML .box element
         var board = jQuery(".board"); // reference to the HTML .board element
+        var board2 = jQuery(".board2") // underground theme
         var boardWidth = board.width(); // the maximum X-Coordinate of the screen
 
         // update the boardWidth variable when the window is resized
@@ -69,7 +80,9 @@
         //////////////////////////////////////////////////////////////////
 
         // TODO 2 - Variable declarations
-
+        var positionX = 20
+        var points = 0
+        var speed = 20
 
 
 
@@ -80,6 +93,15 @@
          * If the box drifts off the screen, turn it around!
          */
         function update() {
+          positionX = positionX + speed;
+          moveBoxTo(positionX);
+          if (positionX > boardWidth){
+            speed *= -1
+          }
+
+          if (positionX < 0){
+            speed *= -1
+          }
 
         
 
@@ -94,6 +116,13 @@
          * - move the box to the left side of the screen.
          */
         function handleBoxClick() {
+        positionX = 0;
+        changeBoxText(points);
+        points++;
+        speed += 3;
+        if (points === 22){
+          
+        }
 
 
 
