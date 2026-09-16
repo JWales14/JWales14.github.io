@@ -120,8 +120,35 @@
         changeBoxText(points);
         points++;
         speed += 3;
+        if (points >= 22){
+          document.body.style.backgroundImage = "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0Y7fVraMBXj5MN7Zbe6moMu6_XHjNAdGAA3j1Ndb3gcjhd7q05b-Uz5M:https://i.pinimg.com/474x/36/60/07/366007265a46330d5e23638120393ce9.jpg&s=10')"; 
+          document.body.style.backgroundSize = 'cover'; 
+          document.body.style.backgroundPosition = 'center'; 
+        }
         if (points === 22){
-          
+          alert('You reached 20! Next level!');
+        }
+
+        if (points >= 42){
+          document.body.style.backgroundImage = "url('https://static.wikia.nocookie.net/mario/images/c/c8/SMB_World_1-3_NES_1.png/revision/latest/scale-to-width-down/499?cb=20190815071503')"; 
+          document.body.style.backgroundSize = 'cover'; 
+          document.body.style.backgroundPosition = 'center'; 
+        }
+        if (points === 42){
+          alert('You reached 40! Next level!');
+        }
+
+        if (points >= 62){
+          document.body.style.backgroundImage = "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1w7jnICFLNx03IbhsJv_98mdiP3VrRxI91ESnXPA1ZKxw1x7kUBxtw5-q:https://wallpapercave.com/wp/wp4663787.jpg&s=10')"; 
+          document.body.style.backgroundSize = 'cover'; 
+          document.body.style.backgroundPosition = 'center'; 
+        }
+        if (points === 62){
+          alert('You reached 60! Final level! Reach 80 to win!');
+        }
+
+        if (points === 82){
+          alert('You reached 80! You win!')
         }
 
 
