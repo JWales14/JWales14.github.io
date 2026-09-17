@@ -51,8 +51,8 @@
 
         var box = jQuery(".box"); // reference to the HTML .box element
         var board = jQuery(".board"); // reference to the HTML .board element
-        var board2 = jQuery(".board2") // underground theme
         var boardWidth = board.width(); // the maximum X-Coordinate of the screen
+        var boardHeight = board.height(); // the maximum Y-Coordinate
 
         // update the boardWidth variable when the window is resized
         jQuery(window).on("resize", function () {
@@ -66,7 +66,7 @@
         box.on("click", handleBoxClick);
 
         // moves the Box to a new position on the screen along the X-Axis
-        function moveBoxTo(newPositionX) {
+        function moveBoxTo(newPositionX, newPositionY) {
           box.css("left", newPositionX);
         }
 
@@ -81,6 +81,7 @@
 
         // TODO 2 - Variable declarations
         var positionX = 20
+        var positionY = 20
         var points = 0
         var speed = 10
 
@@ -94,12 +95,20 @@
          */
         function update() {
           positionX = positionX + speed;
-          moveBoxTo(positionX);
+          moveBoxTo(positionX, positionY);
           if (positionX > boardWidth){
             speed *= -1
           }
 
           if (positionX < 0){
+            speed *= -1
+          }
+
+          if (positionY > boardHeight){
+            speed *= -1
+          }
+
+          if (positionY < 0){
             speed *= -1
           }
 
@@ -149,6 +158,16 @@
 
         if (points === 82){
           alert('You reached 80! You win!')
+        }
+
+        if (points >= 102){
+          document.body.style.backgroundImage = "url('https://i.ytimg.com/vi/n6hATiacDS8/maxresdefault.jpg')";
+          document.body.style.backgroundSize = 'cover';
+          document.body.style.backgroundPosition = 'center';
+        }
+        
+        if (points === 102){
+          alert("Wow, I really didn't think you'd keep playing. BONUS LEVEL!!!");
         }
 
 
