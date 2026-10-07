@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Portfolio</title>
+  
+  <!-- Google Fonts for Minimalist Gallery Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --wall-bg: #a3ffeb;
+      --wall-texture: #e1eae9;
+      --floor-color: #22232b;
+      --frame-wood: #182021;
+      --frame-inner-border: #14110e;
+      --mat-white: #fcfbfa;
+      --plaque-wood: linear-gradient(145deg, #2d2621, #1e1915);
+      --plaque-border: #303042;
+      --text-engraved: #cbfff6;
+      --spotlight-warmth: rgba(181, 219, 245, 0.65);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--wall-bg);
+      font-family: 'Inter', sans-serif;
+      color: #2c2825;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      padding: 3rem 1.5rem 1.5rem;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), transparent);
+      position: relative;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: #1a1715;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    header p {
+      font-size: 0.85rem;
+      color: #656775;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    .hint {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: #59524a;
+      border: 1px solid rgba(89, 82, 74, 0.25);
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .gallery-room {
+      flex: 1;
+      position: relative;
+      background-color: var(--wall-bg);
+      background-image: 
+        radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.9) 0%, transparent 70%),
+        radial-gradient(circle at 50% 80%, rgba(0, 0, 0, 0.03) 0%, transparent 60%);
+      padding: 2.5rem 2rem 6rem;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 3.5rem 2.5rem;
+      max-width: 1380px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .exhibit-bay {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.35 ease;
+    }
+
+    .exhibit-bay:hover {
+      transform: translateY(-4px);
+    }
+
+    .wall-light {
+      width: 70px;
+      height: 6px;
+      background: #38312b;
+      border-radius: 3px;
+      position: relative;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      z-index: 2;
+    }
+
+    .wall-light::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 130px solid transparent;
+      border-right: 130px solid transparent;
+      border-top: 220px solid var(--spotlight-warmth);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+      filter: blur(8px);
+    }
+
+    .frame {
+      position: relative;
+      background: var(--frame-wood);
+      padding: 14px;
+      border-radius: 2px;
+      box-shadow: 
+        0 18px 30px rgba(0,0,0,0.12),
+        0 8px 12px rgba(0,0,0,0.08),
+        inset 0 0 2px rgba(255,255,255,0.1);
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .frame:hover {
+      box-shadow: 
+        0 24px 40px rgba(0,0,0,0.18),
+        0 10px 16px rgba(0,0,0,0.1);
+    }
+
+    .frame-inner {
+      background: var(--frame-inner-border);
+      padding: 2px;
+    }
+
+    .mat {
+      background-color: var(--mat-white);
+      padding: 18px;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.06);
+    }
+
+    .canvas-container {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: #e8e6e1;
+    }
+
+    .canvas-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: contrast(1.02);
+      transition: transform 0.5s ease;
+    }
+
+    .frame:hover .canvas-container img {
+      transform: scale(1.03);
+    }
+
+    .wooden-plaque {
+      margin-top: 1.8rem;
+      background: var(--plaque-wood);
+      border: 1px solid var(--plaque-border);
+      border-radius: 3px;
+      padding: 8px 22px;
+      text-align: center;
+      box-shadow: 
+        0 4px 10px rgba(0,0,0,0.15),
+        inset 0 1px 1px rgba(255,255,255,0.1);
+      position: relative;
+    }
+
+    .wooden-plaque::before, .wooden-plaque::after {
+      content: '•';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #5e5045;
+      font-size: 8px;
+    }
+    .wooden-plaque::before { left: 8px; }
+    .wooden-plaque::after { right: 8px; }
+
+    .plaque-text {
+      font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-engraved);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-shadow: 0 -1px 1px rgba(0,0,0,0.8);
+    }
+
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(20, 18, 16, 0.88);
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .lightbox:target {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .lightbox-content {
+      background: #faf8f5;
+      border: 1px solid #c0bed0;
+      padding: 2rem;
+      max-width: 88vw;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 4px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      position: relative;
+      transform: scale(0.96);
+      transition: transform 0.35s ease;
+    }
+
+    .lightbox:target .lightbox-content {
+      transform: scale(1);
+    }
+
+    .lightbox-image-wrapper {
+      max-height: 65vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 10px solid var(--frame-wood);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      background: #111;
+    }
+
+    .lightbox-image-wrapper img {
+      max-width: 100%;
+      max-height: 65vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .lightbox-info {
+      margin-top: 1.2rem;
+      text-align: center;
+    }
+
+    .lightbox-plaque {
+      display: inline-block;
+      background: var(--plaque-wood);
+      border: 1px solid var(--plaque-border);
+      padding: 6px 20px;
+      border-radius: 3px;
+      color: var(--text-engraved);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 12px;
+      right: 18px;
+      color: #554d45;
+      font-size: 1.8rem;
+      text-decoration: none;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .close-btn:hover {
+      color: #111;
+    }
+
+    .backdrop-dismiss {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .gallery-floor {
+      height: 18px;
+      background: #231f1c;
+      border-top: 3px solid #3d352e;
+    }
+
+    @media (max-width: 768px) {
+      header h1 { font-size: 1.8rem; }
+      .gallery-grid { grid-template-columns: 1fr; max-width: 380px; }
+      .lightbox-content { padding: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Gallery Header -->
+  <header>
+    <h1>Art Exhibit</h1>
+    <p>Permanent Gallery Collection</p>
+    <div class="hint">Click artwork to view fullscreen.</div>
+  </header>
+
+  <main class="gallery-room">
+    <div class="gallery-grid">
+
+      <!-- Exhibit 1 -->
+      <div class="exhibit-bay">
+        <div class="wall-light"></div>
+        <a href="#artwork1" class="frame" title="Click to inspect artwork">
+          <div class="frame-inner">
+            <div class="mat">
+              <div class="canvas-container">
+                <img src = "/assets/IMG_0006.JPG" alt="Exhibition Image 1" onerror="this.src='/assets/IMG_0006.JPG'">
+              </div>
+            </div>
+          </div>
+        </a>
+        <div class="wooden-plaque">
+          <div class="plaque-text">A picture of the science building</div>
+        </div>
+      </div>
+
+      <!-- Exhibit 2 -->
+      <div class="exhibit-bay">
+        <div class="wall-light"></div>
+        <a href="#artwork2" class="frame" title="Click to inspect artwork">
+          <div class="frame-inner">
+            <div class="mat">
+              <div class="canvas-container">
+                <img src="assets/IMG_0007.JPG" alt="Exhibition Image 2" onerror="this.src='https://placehold.co/800x600/e8e6e1/2c2825?text=Exhibit+2'">
+              </div>
+            </div>
+          </div>
+        </a>
+        <div class="wooden-plaque">
+          <div class="plaque-text">A better, close up picture of the science building</div>
+        </div>
+      </div>
+
+      <!-- Exhibit 3 -->
+      <div class="exhibit-bay">
+        <div class="wall-light"></div>
+        <a href="#artwork3" class="frame" title="Click to inspect artwork">
+          <div class="frame-inner">
+            <div class="mat">
+              <div class="canvas-container">
+                <img src="assets/IMG_0009.JPG" alt="Exhibition Image 3" onerror="this.src='https://placehold.co/800x600/e8e6e1/2c2825?text=Exhibit+3'">
+              </div>
+            </div>
+          </div>
+        </a>
+        <div class="wooden-plaque">
+          <div class="plaque-text">Outside the Auditorium</div>
+        </div>
+      </div>
+
+      <!-- Exhibit 4 -->
+      <div class="exhibit-bay">
+        <div class="wall-light"></div>
+        <a href="#artwork4" class="frame" title="Click to inspect artwork">
+          <div class="frame-inner">
+            <div class="mat">
+              <div class="canvas-container">
+                <img src="assets/IMG_0014.JPG" alt="Exhibition Image 4" onerror="this.src='https://placehold.co/800x600/e8e6e1/2c2825?text=Exhibit+4'">
+              </div>
+            </div>
+          </div>
+        </a>
+        <div class="wooden-plaque">
+          <div class="plaque-text">A picture of the New Commons</div>
+        </div>
+      </div>
+
+      <!-- Exhibit 5 -->
+      <div class="exhibit-bay">
+        <div class="wall-light"></div>
+        <a href="#artwork5" class="frame" title="Click to inspect artwork">
+          <div class="frame-inner">
+            <div class="mat">
+              <div class="canvas-container">
+                <img src="assets/IMG_0016.JPG" alt="Exhibition Image 5" onerror="this.src='https://placehold.co/800x600/e8e6e1/2c2825?text=Exhibit+5'">
+              </div>
+            </div>
+          </div>
+        </a>
+        <div class="wooden-plaque">
+          <div class="plaque-text">Picture Outside with Wonderful Lighting</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="gallery-floor"></div>
+
+  <!-- Lightbox 1 -->
+  <div id="artwork1" class="lightbox">
+    <a href="#close" class="backdrop-dismiss" aria-label="Close dialog"></a>
+    <div class="lightbox-content">
+      <a href="#close" class="close-btn" title="Close">&times;</a>
+      <div class="lightbox-image-wrapper">
+        <img src="/assets/IMG_0006.JPG" alt="Exhibition Image 1 Enlarged" onerror="this.src='https://placehold.co/1200x900/e8e6e1/2c2825?text=Exhibit+1'">
+      </div>
+      <div class="lightbox-info">
+        <div class="lightbox-plaque">A picture of the science building</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox 2 -->
+  <div id="artwork2" class="lightbox">
+    <a href="#close" class="backdrop-dismiss" aria-label="Close dialog"></a>
+    <div class="lightbox-content">
+      <a href="#close" class="close-btn" title="Close">&times;</a>
+      <div class="lightbox-image-wrapper">
+        <img src="assets/IMG_0007.JPG" alt="Exhibition Image 2 Enlarged" onerror="this.src='https://placehold.co/1200x900/e8e6e1/2c2825?text=Exhibit+2'">
+      </div>
+      <div class="lightbox-info">
+        <div class="lightbox-plaque">A better, close up picture of the science building</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox 3 -->
+  <div id="artwork3" class="lightbox">
+    <a href="#close" class="backdrop-dismiss" aria-label="Close dialog"></a>
+    <div class="lightbox-content">
+      <a href="#close" class="close-btn" title="Close">&times;</a>
+      <div class="lightbox-image-wrapper">
+        <img src="assets/IMG_0009.JPG" alt="Exhibition Image 3 Enlarged" onerror="this.src='https://placehold.co/1200x900/e8e6e1/2c2825?text=Exhibit+3'">
+      </div>
+      <div class="lightbox-info">
+        <div class="lightbox-plaque">Outside the Auditorium</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox 4 -->
+  <div id="artwork4" class="lightbox">
+    <a href="#close" class="backdrop-dismiss" aria-label="Close dialog"></a>
+    <div class="lightbox-content">
+      <a href="#close" class="close-btn" title="Close">&times;</a>
+      <div class="lightbox-image-wrapper">
+        <img src="assets/IMG_0014.JPG" alt="Exhibition Image 4 Enlarged" onerror="this.src='https://placehold.co/1200x900/e8e6e1/2c2825?text=Exhibit+4'">
+      </div>
+      <div class="lightbox-info">
+        <div class="lightbox-plaque">A picture of the New Commons</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox 5 -->
+  <div id="artwork5" class="lightbox">
+    <a href="#close" class="backdrop-dismiss" aria-label="Close dialog"></a>
+    <div class="lightbox-content">
+      <a href="#close" class="close-btn" title="Close">&times;</a>
+      <div class="lightbox-image-wrapper">
+        <img src="assets/IMG_0016.JPG" alt="Exhibition Image 5 Enlarged" onerror="this.src='https://placehold.co/1200x900/e8e6e1/2c2825?text=Exhibit+5'">
+      </div>
+      <div class="lightbox-info">
+        <div class="lightbox-plaque">Picture outside with wonderful lighting</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
