@@ -96,10 +96,11 @@ let halleImage;
 let animationDetails = {};
 
 var collectableList = {
-  database: { image: "https://freepngimg.com/save/91876-square-art-bros-mario-allstars-super/1600x1600" },
+  database: { image: "images/collectables/MARIO.png" },
   diamond: { image: "images/collectables/diamond-head.png" },
   grace: { image: "images/collectables/grace-head.png" },
   kennedi: { image: "images/collectables/kennedi-head.png" },
   max: { image: "https://www.kroger.com/product/images/xlarge/front/0001980020133" },
   steve: { image: "images/collectables/steve-head.png" },
+  doubleCherry: { image: "https://static.wikia.nocookie.net/mario/images/e/ed/3dworldcherry.png/revision/latest?cb=20250807225204" },
 };
